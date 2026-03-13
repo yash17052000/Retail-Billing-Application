@@ -62,8 +62,8 @@ public class SpringSecurity {
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
   return  http.cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth.requestMatchers("/login","/encode").permitAll()
-                    .requestMatchers("/categories", "/items","/orders","/payments/**").hasAnyRole("USER", "ADMIN")
+            .authorizeHttpRequests(auth -> auth.requestMatchers("/login","/encode","/UploadsFile/**","/uploads/files/**").permitAll()
+                    .requestMatchers("/categories", "/items","/orders","/payments/**","/dashboard").hasAnyRole("USER", "ADMIN")
                     .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                     .anyRequest().authenticated())
 

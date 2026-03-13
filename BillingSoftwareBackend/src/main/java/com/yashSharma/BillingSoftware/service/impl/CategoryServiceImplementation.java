@@ -6,10 +6,15 @@ import com.yashSharma.BillingSoftware.io.CategoryResponse;
 import com.yashSharma.BillingSoftware.repository.CategoryRepository;
 import com.yashSharma.BillingSoftware.repository.ItemRepository;
 import com.yashSharma.BillingSoftware.service.CategoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +33,15 @@ public class CategoryServiceImplementation implements CategoryService {
     @Autowired
     private ItemRepository itemRepository;
     @Override
-    public CategoryResponse add(CategoryRequest categoryRequest, MultipartFile file) {
-        String imgUrl=fileUploadService.storeFile(file);
+    public CategoryResponse add(CategoryRequest categoryRequest, MultipartFile file) throws IOException {
+//        String imgUrl=fileUploadService.storeFile(file);
+
+        String fileName = UUID.randomUUID().toString()+ "." + StringUtils.getFilenameExtension(file.getOriginalFilename());
+        Path uploadPath = Paths.get("UploadsFile").toAbsolutePath().normalize();
+        Files.createDirectories(uploadPath);
+        Path targetLocation = uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        String imgUrl = "http://localhost:8080/api/v1/UploadsFile/" + fileName;
         CategoryEntity newCategory= convertToEntity(categoryRequest);
         newCategory.setImgUrl(imgUrl);
 
@@ -53,11 +65,20 @@ public class CategoryServiceImplementation implements CategoryService {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findByCategoryId(categoryId);
         String imageUrl = categoryEntity.get().getImgUrl();
         String imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-        fileUploadService.deleteFile(imageName);
-        if(categoryEntity.isPresent())
-        categoryRepository.delete(categoryEntity.get());
-        else
-        throw new RuntimeException("invalid id");
+        Path uploadsFile = Paths.get("UploadsFile").toAbsolutePath().normalize();
+
+        try {
+            Files.delete(Path.of(uploadsFile.toString()+"/" + imageName));
+            System.out.println("File deleted successfully.");
+        } catch (NoSuchFileException e) {
+            System.out.println("File does not exist.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        categoryRepository.delete(categoryId);
+
 
 
     }

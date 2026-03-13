@@ -10,8 +10,11 @@ import com.yashSharma.BillingSoftware.service.FileUploadService;
 import com.yashSharma.BillingSoftware.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,8 +33,13 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
-    public ItemResponse add(ItemRequest request, MultipartFile file) {
-        String imgUrl = fileUploadService.storeFile(file);
+    public ItemResponse add(ItemRequest request, MultipartFile file) throws IOException {
+        String fileName = UUID.randomUUID().toString()+ "." + StringUtils.getFilenameExtension(file.getOriginalFilename());
+        Path uploadPath = Paths.get("UploadsFile").toAbsolutePath().normalize();
+        Files.createDirectories(uploadPath);
+        Path targetLocation = uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        String imgUrl = "http://localhost:8080/api/v1/UploadsFile/" + fileName;
         ItemEntity newItem = convertToEntity(request);
         CategoryEntity existingCategory = categoryRepository.findByCategoryId(request.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found: " + request.getCategoryId()));
@@ -74,6 +82,22 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void deleteItem(String itemId) {
 
-        itemRepository.deleteByItemId(itemId);
+        Optional<ItemEntity>itemEntity= itemRepository.findByItemId(itemId) ;
+        String imageUrl = itemEntity.get().getImgUrl();
+        String imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+        Path uploadsFile = Paths.get("UploadsFile").toAbsolutePath().normalize();
+
+        try {
+            Files.delete(Path.of(uploadsFile.toString()+"/" + imageName));
+            System.out.println("File deleted successfully.");
+        } catch (NoSuchFileException e) {
+            System.out.println("File does not exist.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        itemRepository.delete(itemId);
+
     }
 }

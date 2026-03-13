@@ -53,7 +53,7 @@ public class FileUploadServiceImpl {
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return "C:/Users/laksh/Desktop/BillingSoftware/BillingSoftwareBackend/uploads/files/"+fileName;
+            return "http://localhost:8080/api/v1/uploads/files/"+fileName;
         } catch (IOException ex) {
             throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
         }

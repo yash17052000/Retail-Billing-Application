@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import tools.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,8 @@ public class CategoryController {
             return categoryService.add(request, file);
         } catch (JsonParseException jsonParseException) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exception occurred while parsing the JSON");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     @GetMapping("/categories")
@@ -42,11 +45,7 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("admin/categories/{categoryId}")
     public void remove(@PathVariable String categoryId) {
-        try {
-            categoryService.delete(categoryId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId);
-        }
+        categoryService.delete(categoryId);
     }
 
 

@@ -6,13 +6,14 @@ import com.yashSharma.BillingSoftware.io.CategoryResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 
 public interface CategoryService {
 
-   CategoryResponse add(CategoryRequest categoryRequest, MultipartFile file);
+   CategoryResponse add(CategoryRequest categoryRequest, MultipartFile file) throws IOException;
    List<CategoryResponse> read(Optional<String> name);
 
     void delete(String categoryId);
