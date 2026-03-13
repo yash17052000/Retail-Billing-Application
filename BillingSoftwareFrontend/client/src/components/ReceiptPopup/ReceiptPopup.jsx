@@ -2,6 +2,8 @@ import React from 'react'
 import "./ReceiptPopup.css"
 
 const ReceiptPopup = ({ orderDetails, onClose, onPrint }) => {
+  console.log("orderdetails",orderDetails);
+  
   return (
     <div className="receipt-popup-overlay text-dark">
       <div className="receipt-popup">

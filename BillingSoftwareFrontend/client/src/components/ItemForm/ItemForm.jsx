@@ -4,10 +4,8 @@ import { AppContext } from '../../context/AppContext';
 import { AddItems, fetchItems } from '../../Service/Item.Service';
 import toast from 'react-hot-toast';
 function ItemForm() {
-    const { categories, searchByName, itemsList, } = useContext(AppContext)
-    useEffect(() => {
-        searchByName()
-    }, [])
+    const { categories, itemsList, } = useContext(AppContext)
+   
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState({
         name: "",

@@ -46,7 +46,7 @@ const updateQuantity = (itemId, newQuantity) => {
         setCategories(res.data)
       },
       error: (error) => console.log("This is error", error),
-      complete: console.log("complete")
+      complete: ()=>console.log("complete")
     })
   }
     const itemsList = (queryParams) => {
@@ -58,7 +58,7 @@ const updateQuantity = (itemId, newQuantity) => {
         setItemsData(res.data)
       },
       error: (error) => console.log("This is error", error),
-      complete: console.log("complete")
+      complete:()=> console.log("complete")
     })
   }
     const setAuthData=(token,role)=>{
@@ -71,6 +71,7 @@ const updateQuantity = (itemId, newQuantity) => {
     const clearcart=()=>{
       setCartItems([])
     }
+    
     const contextValue = {
         categories, setCategories, searchByName,
         setAuthData,auth,
@@ -83,6 +84,7 @@ const updateQuantity = (itemId, newQuantity) => {
         updateQuantity,
         clearcart
     }
+
     return <AppContext.Provider value={contextValue}>
         {props.children}
     </AppContext.Provider>

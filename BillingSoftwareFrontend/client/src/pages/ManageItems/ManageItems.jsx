@@ -1,17 +1,29 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import "./ManagItems.css"
 import ItemForm from '../../components/ItemForm/ItemForm'
 import ItemList from '../../components/ItemList/ItemList'
+import { AppContext } from '../../context/AppContext'
+import { useLocation } from 'react-router-dom'
 function ManageItems() {
+  const location = useLocation();
+
+  const { itemsList, searchByName } = useContext(AppContext)
+  
+   useEffect(
+    () => {
+     itemsList([])
+     searchByName([])
+   }, [])
+
   return (
     <div className="items-container text-light">
-  <div className="left-column">
-    <ItemForm/>
-  </div>
-  <div className="right-column">
-    <ItemList/>
-  </div>
-</div>
+      <div className="left-column">
+        <ItemForm />
+      </div>
+      <div className="right-column">
+        <ItemList />
+      </div>
+    </div>
   )
 }
 

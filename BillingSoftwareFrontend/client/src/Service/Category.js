@@ -36,7 +36,7 @@ export const DeleteCategory = (categoryId) => {
     
 
     return new Observable((subscriber) => {
-        networkService.delete(url,{
+        networkService.delete(url,[],{
             headers:{
                 "Authorization":"Bearer "+localStorage.getItem("token")
             }

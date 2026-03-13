@@ -30,9 +30,7 @@ function ItemList() {
   }
 
 
-  useEffect(() => {
-    itemsList()
-  }, [])
+ 
   return (
     <div className="category-list-container" style={{ height: '100vh', overflowY: 'auto', overflowX: 'hidden', width: "100%" }}>
 

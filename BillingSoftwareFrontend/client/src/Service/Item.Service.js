@@ -22,17 +22,21 @@ export const AddItems = (queryParams) => {
     })
 }
 
-export const DeleteItems = (categoryId) => {
+export const DeleteItems = (itemId) => {
     // create instance of UrlConfig
     const urls = UrlConfig.AddCategory()+"admin/items";
 
     // use backticks for template literal
-    let url = `${urls}/${categoryId}`;
+    let url = `${urls}/${itemId}`;
     console.log("This is",url);
     
 
     return new Observable((subscriber) => {
-        networkService.delete(url).then(
+        networkService.delete(url,[],{
+            headers:{
+                "Authorization":"Bearer "+localStorage.getItem("token")
+            }
+        }).then(
             (res) => {
                 if (res) subscriber.next(res);
                 subscriber.complete();

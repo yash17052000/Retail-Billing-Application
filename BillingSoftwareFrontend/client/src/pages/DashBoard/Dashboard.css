@@ -1,0 +1,106 @@
+/* General Reset & Layout */
+body, html {
+    height: 100%;
+    overflow-y: hidden;
+}
+
+.dashboard-wrapper {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-container {
+    padding: 20px;
+    background-color: #212529;
+    min-height: 100vh;
+    color: #e9ecef;
+}
+
+/* Typography & Titles */
+.dashboard-title {
+    color: #f8f9fa;
+    margin-bottom: 30px;
+    font-weight: 600;
+    border-bottom: 2px solid #495057;
+    padding-bottom: 10px;
+}
+
+/* Stats Grid & Cards */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(32, 201, 151, 0.1);
+}
+
+.stat-content h3 {
+    margin: 0 0 5px 0;
+    color: #adb5bd;
+    font-size: 1rem;
+}
+
+.stat-content p {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #f8f9fa;
+}
+
+/* Table Styles */
+.orders-table th {
+    background-color: #495057;
+    color: #f8f9fa;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.orders-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #495057;
+    color: #e9ecef;
+}
+
+.orders-table tr:hover {
+    background-color: #495057;
+}
+
+/* Loading & Error States */
+.dashboard-loading,
+.dashboard-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #f8f9fa;
+    font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stat-icon {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}
